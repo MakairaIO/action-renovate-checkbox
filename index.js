@@ -9,7 +9,8 @@ async function run() {
     const masterIssueId = core.getInput("master-issue-id");
     const owner = core.getInput("owner");
     const repo = core.getInput("repo");
-    const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+    const token = core.getInput("token");
+    const octokit = github.getOctokit(token || process.env.GITHUB_TOKEN);
 
     if (!masterIssueId) {
       core.setFailed("master-issue-id is missing! Please take a look at the documentation and set the missing parameter.");
