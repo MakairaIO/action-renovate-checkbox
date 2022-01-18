@@ -10,6 +10,9 @@ async function run() {
     const owner = core.getInput("owner");
     const repo = core.getInput("repo");
     const token = core.getInput("token");
+    core.warning(token);
+    core.warning(owner);
+    core.warning(repo);
     const octokit = github.getOctokit(token ? token : process.env.GITHUB_TOKEN);
 
     if (!masterIssueId) {
