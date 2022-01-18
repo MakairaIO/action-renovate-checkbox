@@ -16,6 +16,9 @@ async function run() {
       return;
     }
 
+    core.info(owner || github.context.repo.owner);
+    core.info(repo || github.context.repo.repo);
+
     const { data: masterIssue } = await octokit.issues.get({
       owner: owner || github.context.repo.owner,
       repo: repo || github.context.repo.repo,
