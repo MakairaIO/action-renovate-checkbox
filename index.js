@@ -7,10 +7,18 @@ const UNCHECKED = "- [ ] <!-- manual job -->";
 async function run() {
   try {
     const masterIssueId = core.getInput("master-issue-id");
+    const owner = core.getInput("owner");
+    const repo = core.getInput("repo");
     const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
+    if (!masterIssueId) {
+      core.setFailed("master-issue-id is missing! Please take a look at the documentation and set the missing parameter.");
+      return;
+    }
+
     const { data: masterIssue } = await octokit.issues.get({
-      ...github.context.repo,
+      owner: owner || github.context.repo.owner,
+      repo: repo || github.context.repo.repo,
       issue_number: masterIssueId,
     });
 
@@ -26,7 +34,8 @@ async function run() {
     }
 
     await octokit.issues.update({
-      ...github.context.repo,
+      owner: owner || github.context.repo.owner,
+      repo: repo || github.context.repo.repo,
       issue_number: masterIssueId,
       body: masterIssue.body.replace(UNCHECKED, CHECKED),
     });
