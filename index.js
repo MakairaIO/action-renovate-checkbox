@@ -20,7 +20,7 @@ async function run() {
       owner: owner || github.context.repo.owner,
       repo: repo || github.context.repo.repo,
       issue_number: masterIssueId,
-    });
+    }).catch(err => core.info(err));
 
     // if (masterIssue.user.login !== "renovate[bot]") {
     //   const message = `Issue ID ${masterIssue.id} author must be "renovate[bot]"`;
