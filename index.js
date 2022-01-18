@@ -10,19 +10,19 @@ async function run() {
     const owner = core.getInput("owner");
     const repo = core.getInput("repo");
     const token = core.getInput("token");
-    const octokit = github.getOctokit(token || process.env.GITHUB_TOKEN);
+    const octokit = github.getOctokit(token ? token : process.env.GITHUB_TOKEN);
 
     if (!masterIssueId) {
       core.setFailed("master-issue-id is missing! Please take a look at the documentation and set the missing parameter.");
       return;
     }
 
-    core.info(owner || github.context.repo.owner);
-    core.info(repo || github.context.repo.repo);
+    core.info(owner ? owner : github.context.repo.owner);
+    core.info(repo ? repo : github.context.repo.repo);
 
     const { data: masterIssue } = await octokit.issues.get({
-      owner: owner || github.context.repo.owner,
-      repo: repo || github.context.repo.repo,
+      owner: owner ? owner : github.context.repo.owner,
+      repo: repo ? repo : github.context.repo.repo,
       issue_number: masterIssueId,
     }).catch(err => console.log(err));
 
@@ -38,8 +38,8 @@ async function run() {
     }
 
     await octokit.issues.update({
-      owner: owner || github.context.repo.owner,
-      repo: repo || github.context.repo.repo,
+      owner: owner ? owner : github.context.repo.owner,
+      repo: repo ? repo : github.context.repo.repo,
       issue_number: masterIssueId,
       body: masterIssue.body.replace(UNCHECKED, CHECKED),
     });
