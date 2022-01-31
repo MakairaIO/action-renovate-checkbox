@@ -23,14 +23,11 @@ async function run() {
 
     const octokit = github.getOctokit(token ? token : process.env.GITHUB_TOKEN);
 
-    core.info(owner ? owner : github.context.repo.owner);
-    core.info(repo ? repo : github.context.repo.repo);
-
     const { data: masterIssue } = await octokit.issues.get({
       owner: owner ? owner : github.context.repo.owner,
       repo: repo ? repo : github.context.repo.repo,
       issue_number: masterIssueId,
-    }).catch(err => console.log(err));
+    }).catch(err => core.error(err));
 
     // if (masterIssue.user.login !== "renovate[bot]") {
     //   const message = `Issue ID ${masterIssue.id} author must be "renovate[bot]"`;
