@@ -10,15 +10,18 @@ async function run() {
     const owner = core.getInput("owner");
     const repo = core.getInput("repo");
     const token = core.getInput("token");
-    core.warning(token);
-    core.warning(owner);
-    core.warning(repo);
-    const octokit = github.getOctokit(token ? token : process.env.GITHUB_TOKEN);
 
     if (!masterIssueId) {
       core.setFailed("master-issue-id is missing! Please take a look at the documentation and set the missing parameter.");
       return;
     }
+
+    if (!(token ? token : process.env.GITHUB_TOKEN)) {
+      core.setFailed("token and GITHUB_TOKEN is missing! Please take a look at the documentation and set the missing parameter.");
+      return;
+    }
+
+    const octokit = github.getOctokit(token ? token : process.env.GITHUB_TOKEN);
 
     core.info(owner ? owner : github.context.repo.owner);
     core.info(repo ? repo : github.context.repo.repo);
