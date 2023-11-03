@@ -17,5 +17,5 @@ inputs:
     description: 'The GitHub Token. Can also be set through the GITHUB_TOKEN env var.'
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
